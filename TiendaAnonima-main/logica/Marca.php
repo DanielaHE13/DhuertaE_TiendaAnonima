@@ -1,0 +1,41 @@
+<?php
+require ("./persistencia/MarcaDAO.php");
+
+class Marca{
+    private $idMarca;
+    private $nombre;
+
+    public function getIdMarca() {
+        return $this->idMarca;
+    }
+
+    public function getNombre() {
+        return $this->nombre;
+    }
+
+    public function getCantidad() {
+        return $this->cantidad;
+    }
+
+    public function __construct($idMarca=0, $nombre=""){
+        $this -> idMarca = $idMarca;
+        $this -> nombre = $nombre;
+    }
+    
+    public function consultarTodos(){
+        $marcas = array();
+        $conexion = new Conexion();
+        $conexion -> abrirConexion();
+        $marcaDAO = new MarcaDAO();
+        $conexion -> ejecutarConsulta($marcaDAO -> consultarTodos());
+        while($registro = $conexion -> siguienteRegistro()){
+            $marca = new Producto($registro[0], $registro[1]);
+            array_push($marcas, $marca);
+        }
+        $conexion -> cerrarConexion();
+        return $marcas;        
+    }
+    
+}
+
+?>
